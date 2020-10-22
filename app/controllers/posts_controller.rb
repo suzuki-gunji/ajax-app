@@ -1,14 +1,22 @@
 class PostsController < ApplicationController
   def index
-    @post = "これはコントローラーで定義したインスタンス変数を確認するための文字列です"
-    @posts = Post.all  # 1番目のレコードを@postに代入
-  end
-
-  def new
+    @posts = Post.all.order(id: "DESC")
   end
   
   def create
     Post.create(content: params[:content])  
+  end
+
+  def checked
+    post = Post.find(params[:id])
+    if post.checked 
+      post.update(checked: false)
+    else
+      post.update(checked: true)
+    end
+
+    item = Post.find(params[:id])
+    render json: { post: item }
   end
 end
 
